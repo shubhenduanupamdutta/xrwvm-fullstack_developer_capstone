@@ -136,9 +136,16 @@ img {
 
 .contact-container img.cars {
 	width: 50%;
-    margin: 0 25% 2em 25%;
+	margin: 0 25% 2em 25%;
 	height: auto;
-    border-radius: 10px;
+	border-radius: 10px;
+}
+
+#contactInfo #helpImage {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-right: 8px dotted #5378a2;
 }
 
 #contactInfo .info {
@@ -155,4 +162,8 @@ img {
 .info-link a {
 	color: #5dade2;
 	text-decoration: unset;
+}
+
+.vertical-line {
+	border-style: dotted;
 }
