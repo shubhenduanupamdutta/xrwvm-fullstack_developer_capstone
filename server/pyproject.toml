@@ -18,6 +18,7 @@ exclude = ["migrations"]
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
+    "ARG001",
     "BLE001",
     "D100",
     "D101",
