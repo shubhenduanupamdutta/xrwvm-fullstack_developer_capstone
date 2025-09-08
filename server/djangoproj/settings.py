@@ -64,6 +64,8 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             BASE_DIR / "frontend" / "static",
+            BASE_DIR / "frontend" / "build",
+            BASE_DIR / "frontend" / "build" / "static",
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -135,4 +137,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATICFILES_DIRS = [
     BASE_DIR / "frontend" / "static",
+    BASE_DIR / "frontend" / "build",
+    BASE_DIR / "frontend" / "build" / "static",
 ]
