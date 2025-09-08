@@ -33,3 +33,16 @@ Then run compose to run the server and mongo db
 ```sh
 docker-compose up
 ```
+
+## Adding Models to SQLite Database from Django
+
+First create `CarMake` and `CarModel` models in `server/djangoapp/models.py`
+
+Then register the models in `server/djangoapp/admin.py`
+
+Then run the following commands to create migrations and migrate the database
+
+```sh
+python manage.py makemigrations
+python manage.py migrate --run-syncdb
+```
