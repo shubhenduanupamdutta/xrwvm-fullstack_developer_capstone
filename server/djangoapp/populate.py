@@ -14,6 +14,8 @@ def initiate() -> None:
         CarMake(name=data["name"], description=data["description"]) for data in car_make_data
     ]
 
+    CarMake.objects.bulk_create(car_make_instances)
+
     # Create CarModel instances with the corresponding CarMake instances
     car_model_data = [
         {"name": "Pathfinder", "type": "SUV", "year": 2023, "car_make": car_make_instances[0]},
