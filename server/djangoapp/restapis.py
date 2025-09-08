@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 import requests
 from django.http import JsonResponse
@@ -36,4 +37,14 @@ def analyze_review_sentiments(text: str) -> JsonResponse | None:
         return response.json()
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
+        print("Network exception occurred")
+
+
+def post_review(data_dict: dict[str, Any]) -> JsonResponse | None:
+    request_url = backend_url + "/insert_review"
+    try:
+        response = requests.post(request_url, json=data_dict, timeout=90)
+        print(response.json())
+        return response.json()
+    except:  # noqa: E722
         print("Network exception occurred")
