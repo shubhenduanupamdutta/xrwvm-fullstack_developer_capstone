@@ -1,18 +1,32 @@
-# Uncomment the imports below before you add the function code
-# import requests
 import os
+
+import requests
+from django.http import JsonResponse
 from dotenv import load_dotenv
 
 load_dotenv()
 
-backend_url = os.getenv(
-    'backend_url', default="http://localhost:3030")
-sentiment_analyzer_url = os.getenv(
-    'sentiment_analyzer_url',
-    default="http://localhost:5050/")
+backend_url = os.getenv("BACKEND_URL", default="http://localhost:3030")
+sentiment_analyzer_url = os.getenv("SENTIMENT_ANALYZER_URL", default="http://localhost:5050/")
 
-# def get_request(endpoint, **kwargs):
-# Add code for get requests to back end
+
+def get_request(endpoint: str, **kwargs: str) -> JsonResponse | None:
+    params = ""
+    if kwargs:
+        for key, value in kwargs.items():
+            params = params + key + "=" + value + "&"
+
+    request_url = backend_url + endpoint + "?" + params
+
+    print(f"GET from {request_url} ")
+    try:
+        # Call get method of requests library with URL and parameters
+        response = requests.get(request_url, timeout=90)
+        return response.json()
+    except:  # noqa: E722
+        # If any error occurs
+        print("Network exception occurred")
+
 
 # def analyze_review_sentiments(text):
 # request_url = sentiment_analyzer_url+"analyze/"+text
