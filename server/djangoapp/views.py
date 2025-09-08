@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import CarMake, CarModel
 from .populate import initiate
-from .restapis import get_request
+from .restapis import analyze_review_sentiments, get_request
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -100,9 +100,17 @@ def get_dealerships(request: HttpRequest, state: str = "All") -> JsonResponse:
     return JsonResponse({"status": 200, "dealers": dealerships})
 
 
-# Create a `get_dealer_reviews` view to render the reviews of a dealer
-# def get_dealer_reviews(request,dealer_id):
-# ...
+def get_dealer_reviews(request: HttpRequest, dealer_id: str) -> JsonResponse:
+    # if dealer id has been provided
+    if dealer_id:
+        endpoint = f"/fetchReviews/dealer/{dealer_id}"
+        reviews: list[dict[str, str]] = get_request(endpoint)  # pyright: ignore[reportAssignmentType]
+        for review_detail in reviews:
+            response: dict[str, str] = analyze_review_sentiments(review_detail["review"])  # pyright: ignore[reportAssignmentType]
+            print(response)
+            review_detail["sentiment"] = response["sentiment"]
+        return JsonResponse({"status": 200, "reviews": reviews})
+    return JsonResponse({"status": 400, "message": "Bad Request"})
 
 
 def get_dealer_details(request: HttpRequest, dealer_id: str) -> JsonResponse:
