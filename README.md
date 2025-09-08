@@ -46,3 +46,11 @@ Then run the following commands to create migrations and migrate the database
 python manage.py makemigrations
 python manage.py migrate --run-syncdb
 ```
+
+## Setting Express MongoDB Backend in Django (Building Proxy to Express Server)
+
+In `.env` file add the following line
+
+```env
+backend_url=http://<your-express-server-url>/
+```
