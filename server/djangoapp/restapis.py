@@ -28,9 +28,12 @@ def get_request(endpoint: str, **kwargs: str) -> JsonResponse | None:
         print("Network exception occurred")
 
 
-# def analyze_review_sentiments(text):
-# request_url = sentiment_analyzer_url+"analyze/"+text
-# Add code for retrieving sentiments
-
-# def post_review(data_dict):
-# Add code for posting review
+def analyze_review_sentiments(text: str) -> JsonResponse | None:
+    request_url = sentiment_analyzer_url + "analyze/" + text
+    try:
+        # Call get method of requests library with URL and parameters
+        response = requests.get(request_url, timeout=90)
+        return response.json()
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
+        print("Network exception occurred")
