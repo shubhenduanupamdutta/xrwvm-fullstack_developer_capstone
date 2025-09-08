@@ -36,9 +36,11 @@ def login_user(request: HttpRequest) -> JsonResponse:
     return JsonResponse(data)
 
 
-# Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
+def logout_request(request: HttpRequest) -> JsonResponse:
+    # Get the user object based on session id in request
+    logout(request) # Terminate user session
+    data = {"userName":""} # Return empty username
+    return JsonResponse(data)
 
 # Create a `registration` view to handle sign up request
 # @csrf_exempt
