@@ -1,12 +1,13 @@
 import json
 import logging
-from datetime import datetime
 
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    JsonResponse,
+)
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import CarMake, CarModel
@@ -106,7 +107,9 @@ def get_dealer_reviews(request: HttpRequest, dealer_id: str) -> JsonResponse:
         endpoint = f"/fetchReviews/dealer/{dealer_id}"
         reviews: list[dict[str, str]] = get_request(endpoint)  # pyright: ignore[reportAssignmentType]
         for review_detail in reviews:
-            response: dict[str, str] = analyze_review_sentiments(review_detail["review"])  # pyright: ignore[reportAssignmentType]
+            response: dict[str, str] = analyze_review_sentiments(
+                review_detail["review"],
+            )  # pyright: ignore[reportAssignmentType]
             print(response)
             review_detail["sentiment"] = response["sentiment"]
         return JsonResponse({"status": 200, "reviews": reviews})
@@ -127,5 +130,7 @@ def add_review(request: HttpRequest) -> JsonResponse:
         response = post_review(data)
         if response and response.get("status") == 200:  # noqa: PLR2004
             return JsonResponse({"status": 200})
-        return JsonResponse({"status": 401, "message": "Error in posting review"})
+        return JsonResponse(
+            {"status": 401, "message": "Error in posting review"},
+        )
     return JsonResponse({"status": 403, "message": "Unauthorized"})

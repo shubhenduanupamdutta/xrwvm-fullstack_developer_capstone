@@ -8,7 +8,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 backend_url = os.getenv("BACKEND_URL", default="http://localhost:3030")
-sentiment_analyzer_url = os.getenv("SENTIMENT_ANALYZER_URL", default="http://localhost:5050/")
+sentiment_analyzer_url = os.getenv(
+    "SENTIMENT_ANALYZER_URL",
+    default="http://localhost:5050/",
+)
 
 
 def get_request(endpoint: str, **kwargs: str) -> JsonResponse | None:
