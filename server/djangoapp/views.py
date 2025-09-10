@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import TypeAlias
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -17,7 +18,7 @@ from .restapis import analyze_review_sentiments, get_request, post_review
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-
+Reviews: TypeAlias = list[dict[str, str]]
 # Create your views here.
 
 
@@ -93,8 +94,8 @@ def get_cars(request: HttpRequest) -> JsonResponse:
     return JsonResponse({"CarModels": cars})
 
 
-# Update the `get_dealerships` render list of dealerships all by default, particular state if
-# state is passed
+# Update the `get_dealerships` render list of dealerships all by default,
+# particular state if state is passed
 def get_dealerships(request: HttpRequest, state: str = "All") -> JsonResponse:
     endpoint = "/fetchDealers" if state == "All" else "/fetchDealers/" + state
     dealerships = get_request(endpoint)
@@ -103,9 +104,10 @@ def get_dealerships(request: HttpRequest, state: str = "All") -> JsonResponse:
 
 def get_dealer_reviews(request: HttpRequest, dealer_id: str) -> JsonResponse:
     # if dealer id has been provided
+
     if dealer_id:
         endpoint = f"/fetchReviews/dealer/{dealer_id}"
-        reviews: list[dict[str, str]] = get_request(endpoint)  # pyright: ignore[reportAssignmentType]
+        reviews: Reviews = get_request(endpoint)  # pyright: ignore[reportAssignmentType]
         for review_detail in reviews:
             response: dict[str, str] = analyze_review_sentiments(
                 review_detail["review"],
