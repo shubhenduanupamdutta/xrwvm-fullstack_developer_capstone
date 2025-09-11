@@ -12,6 +12,7 @@ sentiment_analyzer_url = os.getenv(
     "SENTIMENT_ANALYZER_URL",
     default="http://localhost:5050/",
 )
+car_search_url = os.getenv("SEARCH_CARS_URL", default="http://localhost:3050/")
 
 
 def get_request(endpoint: str, **kwargs: str) -> JsonResponse | None:
@@ -51,3 +52,23 @@ def post_review(data_dict: dict[str, Any]) -> JsonResponse | None:
         return response.json()
     except:  # noqa: E722
         print("Network exception occurred")
+
+
+def search_cars_request(endpoint: str, **kwargs: str) -> JsonResponse | None:
+    params = ""
+    if kwargs:
+        for key, value in kwargs.items():
+            params = params + key + "=" + value + "&"
+
+    request_url = car_search_url + endpoint + "?" + params
+
+    print(f"GET from {request_url} ")
+    try:
+        # Call get method of requests library with URL and parameters
+        response = requests.get(request_url, timeout=90)
+        return response.json()
+    except:  # noqa: E722
+        # If any error occurs
+        print("Network exception occurred")
+    finally:
+        print("GET request call complete!")
